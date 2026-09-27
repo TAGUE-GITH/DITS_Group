@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiUser } from "react-icons/fi";
 import { getArticleById } from "../api/articleApi";
+import { toAssetUrl } from "../api/http";
 import useFetch from "../hooks/useFetch";
 import { formatDate } from "../utils/format";
 import PageHeader from "../components/ui/PageHeader";
@@ -28,7 +29,7 @@ export default function ArticleDetail() {
               {article?.imageUrl && (
                 <img
                   className="article-cover"
-                  src={article.imageUrl}
+                  src={toAssetUrl(article.imageUrl)}
                   alt={article.title}
                 />
               )}

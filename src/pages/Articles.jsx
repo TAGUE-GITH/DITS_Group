@@ -5,9 +5,12 @@ import useFetch from "../hooks/useFetch";
 import PageHeader from "../components/ui/PageHeader";
 import DataState from "../components/ui/DataState";
 import ArticleCard from "../components/cards/ArticleCard";
+import usePageTitle from "../hooks/usePageTitle";
 import "./Detail.css";
 
 export default function Articles() {
+  usePageTitle("Actualités et articles", "Conseils, retours d'expérience et nouveautés de DITS Group.");
+
   const [search, setSearch] = useState("");
   const { data, loading, error } = useFetch(getArticles);
 

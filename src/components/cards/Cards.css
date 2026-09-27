@@ -93,3 +93,18 @@
   object-fit: cover;
   border-radius: 12px;
 }
+.service-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  background: var(--gold-soft);
+  color: var(--navy);
+  transition: var(--transition);
+}
+
+.service-card:hover .service-icon {
+  background: var(--gold);
+}

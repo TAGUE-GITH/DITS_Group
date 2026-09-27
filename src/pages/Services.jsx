@@ -4,8 +4,11 @@ import PageHeader from "../components/ui/PageHeader";
 import DataState from "../components/ui/DataState";
 import ServiceCard from "../components/cards/ServiceCard";
 import CtaSection from "../components/home/CtaSection";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function Services() {
+  usePageTitle("Services", "Découvrez les services proposés par DITS Group.");
+
   const { data, loading, error } = useFetch(getServices);
 
   return (

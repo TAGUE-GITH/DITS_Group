@@ -1,6 +1,9 @@
 import Button from "../components/ui/Button";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function NotFound() {
+  usePageTitle("Page non trouvée", "La page que vous recherchez n'existe pas.");
+
   return (
     <section className="section">
       <div className="container empty">

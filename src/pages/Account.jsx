@@ -16,8 +16,12 @@ import DataState from "../components/ui/DataState";
 import Button from "../components/ui/Button";
 import DocumentCard from "../components/account/DocumentCard";
 import "./Account.css";
+import usePageTitle from "../hooks/usePageTitle";
+import ReviewCard from "../components/account/ReviewCard";
 
 export default function Account() {
+  usePageTitle("Mon espace", "Gérez vos documents et suivez vos échanges avec DITS Group.");
+
   const { user, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -67,6 +71,7 @@ export default function Account() {
                 </Link>
               )}
             </div>
+            <ReviewCard />
           </aside>
 
           <div>

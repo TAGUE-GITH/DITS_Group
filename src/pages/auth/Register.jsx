@@ -8,8 +8,11 @@ import Field from "../../components/ui/Field";
 import PasswordInput from "../../components/ui/PasswordInput";
 import Button from "../../components/ui/Button";
 import Alert from "../../components/ui/Alert";
+import usePageTitle from "../../hooks/usePageTitle";
 
 export default function Register() {
+  usePageTitle("Inscription", "Créez votre compte pour accéder à votre espace personnel.");
+
   const [done, setDone] = useState(false);
   const { values, handleChange } = useForm({
     firstName: "",

@@ -7,8 +7,11 @@ import Field from "../../components/ui/Field";
 import PasswordInput from "../../components/ui/PasswordInput";
 import Button from "../../components/ui/Button";
 import Alert from "../../components/ui/Alert";
+import usePageTitle from "../../hooks/usePageTitle";
 
 export default function Login() {
+  usePageTitle("Connexion", "Connectez-vous pour accéder à votre espace personnel.");
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();

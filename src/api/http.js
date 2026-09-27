@@ -1,4 +1,16 @@
 const BASE_URL = "http://localhost:8080/api";
+export const ASSET_BASE_URL = BASE_URL.replace(/\/api\/?$/, "");
+
+export const toAssetUrl = (path) => {
+  if (!path) return "";
+  if (/^https?:\/\//.test(path)) return path;
+  return `${ASSET_BASE_URL}${path}`;
+};
+
+const authMessages = {
+  401: "Session expirée ou invalide. Déconnectez-vous puis reconnectez-vous.",
+  403: "Accès refusé : ce compte n'a pas les droits nécessaires.",
+};
 
 const getToken = () => localStorage.getItem("token");
 
@@ -23,8 +35,9 @@ const extractMessage = (data, fallback) => {
   return fallback;
 };
 
-const createError = (data, status, fallback) => {
-  const error = new Error(extractMessage(data, fallback));
+const createError = (data, status, fallback, auth = false) => {
+  const defaultMessage = (auth && authMessages[status]) || fallback;
+  const error = new Error(extractMessage(data, defaultMessage));
   error.status = status;
   return error;
 };
@@ -58,7 +71,7 @@ export const request = async (
 
   const data = await parse(response);
 
-  if (!response.ok) throw createError(data, response.status, fallback);
+  if (!response.ok) throw createError(data, response.status, fallback, auth);
 
   return data;
 };
@@ -70,7 +83,7 @@ export const download = async (path, fileName = "document") => {
 
   if (!response.ok) {
     const data = await parse(response);
-    throw createError(data, response.status, "Impossible de télécharger le fichier.");
+    throw createError(data, response.status, "Impossible de télécharger le fichier.", true);
   }
 
   const blob = await response.blob();

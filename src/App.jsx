@@ -22,6 +22,16 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminServices from "./pages/admin/AdminServices";
+import AdminProjects from "./pages/admin/AdminProjects";
+import AdminArticles from "./pages/admin/AdminArticles";
+import AdminPartners from "./pages/admin/AdminPartners";
+import AdminJobOffers from "./pages/admin/AdminJobOffers";
+import AdminApplications from "./pages/admin/AdminApplications";
+import AdminRequests from "./pages/admin/AdminRequests";
+import AdminNewsletter from "./pages/admin/AdminNewsletter";
+import AdminDocuments from "./pages/admin/AdminDocuments";
+import AdminReviews from "./pages/admin/AdminReviews";
 
 export default function App() {
   return (
@@ -34,9 +44,19 @@ export default function App() {
 
       <Route element={<ProtectedRoute admin />}>
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="utilisateurs" element={<AdminUsers />} />
-        </Route>
+  <Route index element={<Dashboard />} />
+  <Route path="services" element={<AdminServices />} />
+  <Route path="realisations" element={<AdminProjects />} />
+  <Route path="articles" element={<AdminArticles />} />
+  <Route path="partenaires" element={<AdminPartners />} />
+  <Route path="utilisateurs" element={<AdminUsers />} />
+  <Route path="offres" element={<AdminJobOffers />} />
+<Route path="candidatures" element={<AdminApplications />} />
+<Route path="demandes" element={<AdminRequests />} />
+<Route path="newsletter" element={<AdminNewsletter />} />
+<Route path="documents" element={<AdminDocuments />} />
+<Route path="avis" element={<AdminReviews />} />
+</Route>
       </Route>
 
       <Route element={<Layout />}>

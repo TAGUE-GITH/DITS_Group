@@ -6,8 +6,11 @@ import PageHeader from "../components/ui/PageHeader";
 import DataState from "../components/ui/DataState";
 import JobCard from "../components/cards/JobCard";
 import "./Careers.css";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function Careers() {
+  usePageTitle("Carrières", "Rejoignez notre équipe et participez à des projets innovants.");
+
   const [type, setType] = useState("");
   const { data, loading, error } = useFetch(getJobOffers);
 

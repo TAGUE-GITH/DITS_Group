@@ -16,11 +16,14 @@ import Alert from "../components/ui/Alert";
 import ApplicationForm from "../components/careers/ApplicationForm";
 import "./Detail.css";
 import "./Careers.css";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function JobDetail() {
   const { id } = useParams();
   const fetcher = useCallback(() => getJobOfferById(id), [id]);
   const { data: job, loading, error } = useFetch(fetcher);
+
+  usePageTitle(job?.title, job?.description);
 
   const closingDate = job?.closingDate;
   const closed =

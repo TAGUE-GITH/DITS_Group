@@ -1,4 +1,5 @@
 import { getPartners } from "../../api/partnerApi";
+import { toAssetUrl } from "../../api/http";
 import useFetch from "../../hooks/useFetch";
 import SectionTitle from "../ui/SectionTitle";
 
@@ -24,12 +25,16 @@ export default function PartnersSection() {
               <a
                 key={partner.id}
                 href={link || "#"}
-                target="_blank"
-                rel="noreferrer"
+                target={link ? "_blank" : undefined}
+                rel={link ? "noreferrer" : undefined}
                 className="partner"
                 title={partner.name}
               >
-                {logo ? <img src={logo} alt={partner.name} loading="lazy" /> : partner.name}
+                {logo ? (
+                  <img src={toAssetUrl(logo)} alt={partner.name} loading="lazy" />
+                ) : (
+                  partner.name
+                )}
               </a>
             );
           })}

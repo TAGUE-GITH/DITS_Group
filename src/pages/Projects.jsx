@@ -5,9 +5,12 @@ import { sortByDateDesc, splitTags } from "../utils/format";
 import PageHeader from "../components/ui/PageHeader";
 import DataState from "../components/ui/DataState";
 import Chips from "../components/ui/Chips";
+import usePageTitle from "../hooks/usePageTitle";
 import ProjectCard from "../components/cards/ProjectCard";
 
 export default function Projects() {
+  usePageTitle("Réalisations", "Les projets menés par DITS Group.");
+
   const [tag, setTag] = useState("");
   const { data, loading, error } = useFetch(getProjects);
 

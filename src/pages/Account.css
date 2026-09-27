@@ -186,3 +186,8 @@
     width: 100%;
   }
 }
+.review-card p {
+  margin: 0.8rem 0;
+  color: var(--muted);
+  line-height: 1.5;
+}

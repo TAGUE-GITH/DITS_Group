@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiBriefcase, FiCalendar } from "react-icons/fi";
 import { getProjectById } from "../api/projectApi";
+import { toAssetUrl } from "../api/http";
 import useFetch from "../hooks/useFetch";
 import { formatDate, splitTags } from "../utils/format";
 import PageHeader from "../components/ui/PageHeader";
@@ -30,7 +31,7 @@ export default function ProjectDetail() {
                 {project?.imageUrl && (
                   <img
                     className="article-cover"
-                    src={project.imageUrl}
+                    src={toAssetUrl(project.imageUrl)}
                     alt={project.title}
                   />
                 )}

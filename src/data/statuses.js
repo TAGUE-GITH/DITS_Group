@@ -22,3 +22,9 @@ export const newsletterStatuses = {
   ACTIVE: { label: "Actif", tone: "success" },
   UNSUBSCRIBED: { label: "Désabonné", tone: "neutral" },
 };
+
+export const reviewStatuses = {
+  PENDING: { label: "En attente de validation", tone: "warning" },
+  APPROVED: { label: "Publié", tone: "success" },
+  REJECTED: { label: "Non retenu", tone: "danger" },
+};

@@ -49,6 +49,15 @@ export default function Contact() {
             <ContactForm key={service} service={service} />
           </div>
         </div>
+
+        <div className="container">
+          <div className="card map-card">
+            <iframe src={company.mapsEmbedUrl} title="Localisation de DITS Group" loading="lazy" />
+            <a className="map-link" href={company.mapsUrl} target="_blank" rel="noreferrer">
+              <FiMapPin /> Ouvrir dans Google Maps
+            </a>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -3,7 +3,8 @@ import { FiBriefcase, FiInbox, FiMail, FiUserCheck } from "react-icons/fi";
 import { getDashboardStats } from "../../api/dashboardApi";
 import useFetch from "../../hooks/useFetch";
 import AdminHeader from "../../components/admin/AdminHeader";
-import StatBar from "../../components/admin/StatBar";
+import DonutChart from "../../components/admin/DonutChart";
+import BarChart from "../../components/admin/BarChart";
 import DataState from "../../components/ui/DataState";
 import "./Dashboard.css";
 
@@ -11,6 +12,8 @@ const GOLD = "var(--gold)";
 const BLUE = "#3b82f6";
 const GREEN = "var(--success)";
 const RED = "var(--danger)";
+const PURPLE = "#8b5cf6";
+const TEAL = "#14b8a6";
 
 const kpis = [
   { key: "pendingUsers", label: "Comptes à valider", icon: FiUserCheck, to: "/admin/utilisateurs", alert: true },
@@ -19,30 +22,20 @@ const kpis = [
   { key: "activeNewsletterSubscribers", label: "Abonnés newsletter", icon: FiMail },
 ];
 
-const sections = [
+const donutSections = [
   {
     title: "Utilisateurs",
-    stats: [
-      ["totalUsers", "Total"],
-      ["activeUsers", "Actifs"],
-      ["pendingUsers", "En attente"],
-      ["disabledUsers", "Désactivés"],
-    ],
-  },
-  {
-    title: "Contenus",
-    stats: [
-      ["totalServices", "Services"],
-      ["totalProjects", "Réalisations"],
-      ["totalArticles", "Articles"],
-      ["totalPartners", "Partenaires"],
-      ["totalDocuments", "Documents"],
+    totalLabel: "Comptes",
+    items: [
+      ["activeUsers", "Actifs", GREEN],
+      ["pendingUsers", "En attente", GOLD],
+      ["disabledUsers", "Désactivés", RED],
     ],
   },
   {
     title: "Demandes",
-    stats: [["totalRequests", "Total"]],
-    bar: [
+    totalLabel: "Demandes",
+    items: [
       ["pendingRequests", "En attente", GOLD],
       ["inProgressRequests", "En cours", BLUE],
       ["processedRequests", "Traitées", GREEN],
@@ -50,17 +43,9 @@ const sections = [
     ],
   },
   {
-    title: "Offres d'emploi",
-    stats: [
-      ["totalJobOffers", "Total"],
-      ["publishedJobOffers", "Publiées"],
-      ["unpublishedJobOffers", "Masquées"],
-    ],
-  },
-  {
     title: "Candidatures",
-    stats: [["totalApplications", "Total"]],
-    bar: [
+    totalLabel: "Candidatures",
+    items: [
       ["pendingApplications", "En attente", GOLD],
       ["inReviewApplications", "En étude", BLUE],
       ["acceptedApplications", "Acceptées", GREEN],
@@ -68,13 +53,29 @@ const sections = [
     ],
   },
   {
-    title: "Newsletter",
-    stats: [
-      ["totalNewsletterSubscribers", "Total"],
-      ["activeNewsletterSubscribers", "Actifs"],
-      ["unsubscribedNewsletterSubscribers", "Désabonnés"],
+    title: "Offres d'emploi",
+    totalLabel: "Offres",
+    items: [
+      ["publishedJobOffers", "Publiées", GREEN],
+      ["unpublishedJobOffers", "Masquées", RED],
     ],
   },
+  {
+    title: "Newsletter",
+    totalLabel: "Abonnés",
+    items: [
+      ["activeNewsletterSubscribers", "Actifs", GREEN],
+      ["unsubscribedNewsletterSubscribers", "Désabonnés", RED],
+    ],
+  },
+];
+
+const contentBars = [
+  ["totalServices", "Services", GOLD],
+  ["totalProjects", "Réalisations", BLUE],
+  ["totalArticles", "Articles", GREEN],
+  ["totalPartners", "Partenaires", PURPLE],
+  ["totalDocuments", "Documents", TEAL],
 ];
 
 export default function Dashboard() {
@@ -110,19 +111,16 @@ export default function Dashboard() {
           })}
         </div>
 
-        <div className="stat-sections">
-          {sections.map(({ title, stats: items, bar }) => (
-            <div key={title} className="card stat-card">
+        <div className="card chart-card chart-card-wide">
+          <h3>Contenus publiés</h3>
+          <BarChart items={contentBars} stats={stats || {}} />
+        </div>
+
+        <div className="chart-grid">
+          {donutSections.map(({ title, totalLabel, items }) => (
+            <div key={title} className="card chart-card">
               <h3>{title}</h3>
-              <div className="stat-list">
-                {items.map(([key, label]) => (
-                  <div key={key} className="stat-item">
-                    <strong>{stats?.[key] ?? 0}</strong>
-                    <span>{label}</span>
-                  </div>
-                ))}
-              </div>
-              {bar && <StatBar items={bar} stats={stats || {}} />}
+              <DonutChart items={items} stats={stats || {}} totalLabel={totalLabel} />
             </div>
           ))}
         </div>

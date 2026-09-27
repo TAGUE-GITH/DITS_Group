@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiLayers } from "react-icons/fi";
 import { getServiceById } from "../api/serviceApi";
+import { toAssetUrl } from "../api/http";
 import useFetch from "../hooks/useFetch";
 import PageHeader from "../components/ui/PageHeader";
 import DataState from "../components/ui/DataState";
@@ -13,7 +14,7 @@ export default function ServiceDetail() {
   const fetcher = useCallback(() => getServiceById(id), [id]);
   const { data: service, loading, error } = useFetch(fetcher);
 
-  const title = service?.title || "Service";
+  const title = service?.title || service?.name || "Service";
 
   return (
     <>
@@ -27,13 +28,19 @@ export default function ServiceDetail() {
             <div className="detail">
               <article>
                 {service?.imageUrl ? (
-                  <img className="article-cover" src={service.imageUrl} alt={title} />
+                  <img
+                    className="article-cover"
+                    src={toAssetUrl(service.imageUrl)}
+                    alt={title}
+                  />
                 ) : (
                   <span className="detail-icon">
                     <FiLayers />
                   </span>
                 )}
-                <div className="detail-content">{service?.description}</div>
+                <div className="detail-content">
+                  {service?.content || service?.description}
+                </div>
               </article>
 
               <aside className="detail-aside">

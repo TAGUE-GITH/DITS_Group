@@ -1,4 +1,5 @@
 import { FiExternalLink } from "react-icons/fi";
+import { toAssetUrl } from "../../api/http";
 import { excerpt } from "../../utils/format";
 import "./Cards.css";
 import "./PartnerCard.css";
@@ -11,7 +12,7 @@ export default function PartnerCard({ partner }) {
     <div className="card card-hover partner-card">
       <div className="partner-logo">
         {logo ? (
-          <img src={logo} alt={partner.name} loading="lazy" />
+          <img src={toAssetUrl(logo)} alt={partner.name} loading="lazy" />
         ) : (
           <span>{partner.name?.charAt(0)}</span>
         )}
