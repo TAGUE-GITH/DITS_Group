@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -13,35 +15,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ProjectRequest {
 
-    @NotBlank(
-            message = "Le titre de la réalisation est obligatoire."
-    )
-    @Size(
-            max = 180,
-            message = "Le titre ne peut pas dépasser 180 caractères."
-    )
+    @NotBlank(message = "Le titre de la réalisation est obligatoire.")
+    @Size(max = 180, message = "Le titre ne peut pas dépasser 180 caractères.")
     private String title;
 
-    @NotBlank(
-            message = "La description est obligatoire."
-    )
+    @NotBlank(message = "La description est obligatoire.")
     private String description;
 
-    @Size(
-            max = 150,
-            message = "Le nom du client ne peut pas dépasser 150 caractères."
-    )
+    @Size(max = 150, message = "Le nom du client ne peut pas dépasser 150 caractères.")
     private String clientName;
-
-    @Size(
-            max = 500,
-            message = "L'URL de l'image est trop longue."
-    )
-    private String imageUrl;
 
     private String technologies;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate completionDate;
 
     private Boolean published;
+
+    private MultipartFile image;
 }

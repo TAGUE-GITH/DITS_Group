@@ -18,16 +18,10 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(
-            nullable = false,
-            length = 180
-    )
+    @Column(nullable = false, length = 180)
     private String title;
 
-    @Column(
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(length = 150)

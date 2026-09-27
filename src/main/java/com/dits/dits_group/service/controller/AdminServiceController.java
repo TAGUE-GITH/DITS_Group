@@ -1,7 +1,13 @@
 package com.dits.dits_group.service.controller;
 
-import com.dits.dits_group.service.entity.Service;
+import com.dits.dits_group.service.dto.ServiceRequest;
+import com.dits.dits_group.service.dto.ServiceResponse;
 import com.dits.dits_group.service.service.ServiceService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,68 +25,37 @@ public class AdminServiceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Service>> getAllServices() {
-        return ResponseEntity.ok(
-                serviceService.findAll()
-        );
+    public ResponseEntity<List<ServiceResponse>> getAllServices() {
+        return ResponseEntity.ok(serviceService.findAll());
     }
 
-    @PostMapping
-    public ResponseEntity<Service> createService(
-            @RequestBody Service service
-    ) {
-        Service savedService = serviceService.save(service);
-
-        return ResponseEntity.ok(savedService);
+    @GetMapping("/{id}")
+    public ResponseEntity<ServiceResponse> getServiceById(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceService.findById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Service> updateService(
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ServiceResponse> createService(@Valid @ModelAttribute ServiceRequest request) {
+        ServiceResponse service = serviceService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ServiceResponse> updateService(
             @PathVariable Long id,
-            @RequestBody Service updatedService
+            @Valid @ModelAttribute ServiceRequest request
     ) {
-        Service service = serviceService.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Service introuvable")
-                );
-
-        service.setTitle(updatedService.getTitle());
-        service.setDescription(updatedService.getDescription());
-        service.setImageUrl(updatedService.getImageUrl());
-        service.setActive(updatedService.isActive());
-
-        return ResponseEntity.ok(
-                serviceService.save(service)
-        );
+        return ResponseEntity.ok(serviceService.update(id, request));
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Service> changeServiceStatus(
-            @PathVariable Long id
-    ) {
-        Service service = serviceService.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Service introuvable")
-                );
-
-        service.setActive(!service.isActive());
-
-        return ResponseEntity.ok(
-                serviceService.save(service)
-        );
+    public ResponseEntity<ServiceResponse> changeServiceStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceService.toggleActive(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteService(
-            @PathVariable Long id
-    ) {
-        serviceService.deleteService(id);
-
-        return ResponseEntity.ok(
-                java.util.Map.of(
-                        "message",
-                        "Service supprimé avec succès."
-                )
-        );
+    public ResponseEntity<Map<String, String>> deleteService(@PathVariable Long id) {
+        serviceService.delete(id);
+        return ResponseEntity.ok(Map.of("message", "Service supprimé avec succès."));
     }
 }

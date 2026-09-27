@@ -6,9 +6,11 @@ import com.dits.dits_group.article.entity.Article;
 import com.dits.dits_group.article.mapper.ArticleMapper;
 import com.dits.dits_group.article.repository.ArticleRepository;
 import com.dits.dits_group.common.exception.ResourceNotFoundException;
+import com.dits.dits_group.common.storage.FileStorageService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,21 +20,19 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
+    private final FileStorageService fileStorageService;
 
     public ArticleService(
             ArticleRepository articleRepository,
-            ArticleMapper articleMapper
+            ArticleMapper articleMapper,
+            FileStorageService fileStorageService
     ) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.fileStorageService = fileStorageService;
     }
 
-    // ==========================================
-    // PUBLIC : ARTICLES PUBLIÉS
-    // ==========================================
-
     public List<ArticleResponse> findAllPublished() {
-
         return articleRepository
                 .findByPublishedTrueOrderByPublicationDateDesc()
                 .stream()
@@ -40,151 +40,67 @@ public class ArticleService {
                 .toList();
     }
 
-    // ==========================================
-    // PUBLIC : DÉTAIL D'UN ARTICLE PUBLIÉ
-    // ==========================================
-
-    public ArticleResponse findPublishedById(
-            Long id
-    ) {
-
+    public ArticleResponse findPublishedById(Long id) {
         Article article = articleRepository
                 .findByIdAndPublishedTrue(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Article introuvable ou indisponible."
-                        )
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Article introuvable ou indisponible."));
 
         return articleMapper.toResponse(article);
     }
-
-    // ==========================================
-    // ADMIN : TOUS LES ARTICLES
-    // ==========================================
 
     public List<ArticleResponse> findAll() {
-
-        return articleRepository
-                .findAll()
-                .stream()
-                .map(articleMapper::toResponse)
-                .toList();
+        return articleRepository.findAll().stream().map(articleMapper::toResponse).toList();
     }
 
-    // ==========================================
-    // ADMIN : DÉTAIL PAR ID
-    // ==========================================
-
-    public ArticleResponse findById(
-            Long id
-    ) {
-
-        Article article =
-                getArticleOrThrow(id);
-
-        return articleMapper.toResponse(article);
+    public ArticleResponse findById(Long id) {
+        return articleMapper.toResponse(getArticleOrThrow(id));
     }
-
-    // ==========================================
-    // ADMIN : CRÉER
-    // ==========================================
 
     @Transactional
-    public ArticleResponse create(
-            ArticleRequest request
-    ) {
+    public ArticleResponse create(ArticleRequest request) {
+        Article article = articleMapper.toEntity(request);
 
-        Article article =
-                articleMapper.toEntity(request);
+        if (hasImage(request.getImage())) {
+            article.setImageUrl(fileStorageService.store(request.getImage(), "articles"));
+        }
 
-        Article savedArticle =
-                articleRepository.save(article);
-
-        return articleMapper.toResponse(
-                savedArticle
-        );
+        return articleMapper.toResponse(articleRepository.save(article));
     }
 
-    // ==========================================
-    // ADMIN : MODIFIER
-    // ==========================================
-
     @Transactional
-    public ArticleResponse update(
-            Long id,
-            ArticleRequest request
-    ) {
+    public ArticleResponse update(Long id, ArticleRequest request) {
+        Article article = getArticleOrThrow(id);
+        articleMapper.updateEntity(article, request);
 
-        Article article =
-                getArticleOrThrow(id);
+        if (hasImage(request.getImage())) {
+            fileStorageService.delete(article.getImageUrl());
+            article.setImageUrl(fileStorageService.store(request.getImage(), "articles"));
+        }
 
-        articleMapper.updateEntity(
-                article,
-                request
-        );
-
-        Article updatedArticle =
-                articleRepository.save(article);
-
-        return articleMapper.toResponse(
-                updatedArticle
-        );
+        return articleMapper.toResponse(articleRepository.save(article));
     }
 
-    // ==========================================
-    // ADMIN : PUBLIER / METTRE EN BROUILLON
-    // ==========================================
-
     @Transactional
-    public ArticleResponse togglePublished(
-            Long id
-    ) {
-
-        Article article =
-                getArticleOrThrow(id);
-
-        article.setPublished(
-                !article.isPublished()
-        );
-
-        Article updatedArticle =
-                articleRepository.save(article);
-
-        return articleMapper.toResponse(
-                updatedArticle
-        );
+    public ArticleResponse togglePublished(Long id) {
+        Article article = getArticleOrThrow(id);
+        article.setPublished(!article.isPublished());
+        return articleMapper.toResponse(articleRepository.save(article));
     }
 
-    // ==========================================
-    // ADMIN : SUPPRIMER
-    // ==========================================
-
     @Transactional
-    public void delete(
-            Long id
-    ) {
-
-        Article article =
-                getArticleOrThrow(id);
-
+    public void delete(Long id) {
+        Article article = getArticleOrThrow(id);
+        fileStorageService.delete(article.getImageUrl());
         articleRepository.delete(article);
     }
 
-    // ==========================================
-    // MÉTHODE INTERNE
-    // ==========================================
+    private boolean hasImage(MultipartFile image) {
+        return image != null && !image.isEmpty();
+    }
 
-    private Article getArticleOrThrow(
-            Long id
-    ) {
-
+    private Article getArticleOrThrow(Long id) {
         return articleRepository
                 .findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Article introuvable."
-                        )
-                );
+                .orElseThrow(() -> new ResourceNotFoundException("Article introuvable."));
     }
 }

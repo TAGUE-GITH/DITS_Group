@@ -7,8 +7,8 @@ import com.dits.dits_group.project.service.ProjectService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,116 +20,42 @@ public class AdminProjectController {
 
     private final ProjectService projectService;
 
-    public AdminProjectController(
-            ProjectService projectService
-    ) {
-        this.projectService =
-                projectService;
+    public AdminProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
-
-    // ==========================================
-    // TOUTES LES RÉALISATIONS
-    // ==========================================
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponse>>
-    getAllProjects() {
-
-        return ResponseEntity.ok(
-                projectService.findAll()
-        );
+    public ResponseEntity<List<ProjectResponse>> getAllProjects() {
+        return ResponseEntity.ok(projectService.findAll());
     }
-
-    // ==========================================
-    // DÉTAIL ADMIN
-    // ==========================================
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse>
-    getProjectById(
-            @PathVariable Long id
-    ) {
-
-        return ResponseEntity.ok(
-                projectService.findById(id)
-        );
+    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.findById(id));
     }
 
-    // ==========================================
-    // CRÉER
-    // ==========================================
-
-    @PostMapping
-    public ResponseEntity<ProjectResponse>
-    createProject(
-            @Valid
-            @RequestBody ProjectRequest request
-    ) {
-
-        ProjectResponse project =
-                projectService.create(
-                        request
-                );
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(project);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProjectResponse> createProject(@Valid @ModelAttribute ProjectRequest request) {
+        ProjectResponse project = projectService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(project);
     }
 
-    // ==========================================
-    // MODIFIER
-    // ==========================================
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponse>
-    updateProject(
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProjectResponse> updateProject(
             @PathVariable Long id,
-
-            @Valid
-            @RequestBody ProjectRequest request
+            @Valid @ModelAttribute ProjectRequest request
     ) {
-
-        return ResponseEntity.ok(
-                projectService.update(
-                        id,
-                        request
-                )
-        );
+        return ResponseEntity.ok(projectService.update(id, request));
     }
-
-    // ==========================================
-    // PUBLIER / MASQUER
-    // ==========================================
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ProjectResponse>
-    togglePublished(
-            @PathVariable Long id
-    ) {
-
-        return ResponseEntity.ok(
-                projectService
-                        .togglePublished(id)
-        );
+    public ResponseEntity<ProjectResponse> togglePublished(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.togglePublished(id));
     }
 
-    // ==========================================
-    // SUPPRIMER
-    // ==========================================
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>>
-    deleteProject(
-            @PathVariable Long id
-    ) {
-
+    public ResponseEntity<Map<String, String>> deleteProject(@PathVariable Long id) {
         projectService.delete(id);
-
-        return ResponseEntity.ok(
-                Map.of(
-                        "message",
-                        "Réalisation supprimée avec succès."
-                )
-        );
+        return ResponseEntity.ok(Map.of("message", "Réalisation supprimée avec succès."));
     }
 }

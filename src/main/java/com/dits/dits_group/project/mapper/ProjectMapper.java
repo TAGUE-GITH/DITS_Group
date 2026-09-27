@@ -8,12 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectMapper {
 
-    // ==========================================
-    // ENTITY -> RESPONSE
-    // ==========================================
-
     public ProjectResponse toResponse(Project project) {
-
         return ProjectResponse.builder()
                 .id(project.getId())
                 .title(project.getTitle())
@@ -26,63 +21,26 @@ public class ProjectMapper {
                 .build();
     }
 
-    // ==========================================
-    // REQUEST -> ENTITY
-    // ==========================================
-
     public Project toEntity(ProjectRequest request) {
-
         return Project.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .clientName(request.getClientName())
-                .imageUrl(request.getImageUrl())
                 .technologies(request.getTechnologies())
                 .completionDate(request.getCompletionDate())
-                .published(
-                        request.getPublished() == null
-                                || request.getPublished()
-                )
+                .published(request.getPublished() == null || request.getPublished())
                 .build();
     }
 
-    // ==========================================
-    // UPDATE ENTITY
-    // ==========================================
-
-    public void updateEntity(
-            Project project,
-            ProjectRequest request
-    ) {
-
-        project.setTitle(
-                request.getTitle()
-        );
-
-        project.setDescription(
-                request.getDescription()
-        );
-
-        project.setClientName(
-                request.getClientName()
-        );
-
-        project.setImageUrl(
-                request.getImageUrl()
-        );
-
-        project.setTechnologies(
-                request.getTechnologies()
-        );
-
-        project.setCompletionDate(
-                request.getCompletionDate()
-        );
+    public void updateEntity(Project project, ProjectRequest request) {
+        project.setTitle(request.getTitle());
+        project.setDescription(request.getDescription());
+        project.setClientName(request.getClientName());
+        project.setTechnologies(request.getTechnologies());
+        project.setCompletionDate(request.getCompletionDate());
 
         if (request.getPublished() != null) {
-            project.setPublished(
-                    request.getPublished()
-            );
+            project.setPublished(request.getPublished());
         }
     }
 }

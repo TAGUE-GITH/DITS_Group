@@ -7,8 +7,8 @@ import com.dits.dits_group.article.service.ArticleService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,112 +20,42 @@ public class AdminArticleController {
 
     private final ArticleService articleService;
 
-    public AdminArticleController(
-            ArticleService articleService
-    ) {
+    public AdminArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
-    // ==========================================
-    // TOUS LES ARTICLES
-    // ==========================================
-
     @GetMapping
-    public ResponseEntity<List<ArticleResponse>>
-    getAllArticles() {
-
-        return ResponseEntity.ok(
-                articleService.findAll()
-        );
+    public ResponseEntity<List<ArticleResponse>> getAllArticles() {
+        return ResponseEntity.ok(articleService.findAll());
     }
-
-    // ==========================================
-    // DÉTAIL ADMIN
-    // ==========================================
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse>
-    getArticleById(
-            @PathVariable Long id
-    ) {
-
-        return ResponseEntity.ok(
-                articleService.findById(id)
-        );
+    public ResponseEntity<ArticleResponse> getArticleById(@PathVariable Long id) {
+        return ResponseEntity.ok(articleService.findById(id));
     }
 
-    // ==========================================
-    // CRÉER
-    // ==========================================
-
-    @PostMapping
-    public ResponseEntity<ArticleResponse>
-    createArticle(
-            @Valid
-            @RequestBody ArticleRequest request
-    ) {
-
-        ArticleResponse article =
-                articleService.create(request);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(article);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ArticleResponse> createArticle(@Valid @ModelAttribute ArticleRequest request) {
+        ArticleResponse article = articleService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(article);
     }
 
-    // ==========================================
-    // MODIFIER
-    // ==========================================
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ArticleResponse>
-    updateArticle(
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ArticleResponse> updateArticle(
             @PathVariable Long id,
-
-            @Valid
-            @RequestBody ArticleRequest request
+            @Valid @ModelAttribute ArticleRequest request
     ) {
-
-        return ResponseEntity.ok(
-                articleService.update(
-                        id,
-                        request
-                )
-        );
+        return ResponseEntity.ok(articleService.update(id, request));
     }
-
-    // ==========================================
-    // PUBLIER / METTRE EN BROUILLON
-    // ==========================================
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ArticleResponse>
-    toggleArticleStatus(
-            @PathVariable Long id
-    ) {
-
-        return ResponseEntity.ok(
-                articleService.togglePublished(id)
-        );
+    public ResponseEntity<ArticleResponse> toggleArticleStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(articleService.togglePublished(id));
     }
 
-    // ==========================================
-    // SUPPRIMER
-    // ==========================================
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>>
-    deleteArticle(
-            @PathVariable Long id
-    ) {
-
+    public ResponseEntity<Map<String, String>> deleteArticle(@PathVariable Long id) {
         articleService.delete(id);
-
-        return ResponseEntity.ok(
-                Map.of(
-                        "message",
-                        "Article supprimé avec succès."
-                )
-        );
+        return ResponseEntity.ok(Map.of("message", "Article supprimé avec succès."));
     }
 }
