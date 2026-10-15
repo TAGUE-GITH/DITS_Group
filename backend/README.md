@@ -5,7 +5,7 @@ Serveur de la plateforme web de **DITS Group**, société de conseil et d'expert
 
 La plateforme réunit un **site vitrine**, un **espace client** et un **tableau de bord d'administration**.
 
-- Site en ligne : [dits-frontend.vercel.app](https://dits-frontend.vercel.app)
+- Site en ligne : [dits-group.vercel.app](https://dits-group.vercel.app)
 - Code du site (React) : dossier [frontend](../frontend)
 
 

@@ -5,7 +5,7 @@ administration de bases de données, cloud et on-premise), à Livry-sur-Seine.
 
 Elle réunit un **site vitrine**, un **espace client** et un **tableau de bord d'administration**.
 
-**Site en ligne : [dits-frontend.vercel.app](https://dits-frontend.vercel.app)**
+**Site en ligne : [dits-group.vercel.app](https://dits-group.vercel.app)**
 
 ![CI](https://github.com/TAGUE-GITH/DITS_Group/actions/workflows/ci.yml/badge.svg)
 

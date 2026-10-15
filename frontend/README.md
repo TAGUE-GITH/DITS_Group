@@ -3,7 +3,7 @@
 Site de **DITS Group**, société de conseil et d'expertise en systèmes d'information (bases de données, cloud et
 on-premise) : site vitrine, espace client et tableau de bord d'administration.
 
-- En ligne : [dits-frontend.vercel.app](https://dits-frontend.vercel.app)
+- En ligne : [dits-group.vercel.app](https://dits-group.vercel.app)
 - API (Spring Boot) : dossier [backend](../backend)
 
 
