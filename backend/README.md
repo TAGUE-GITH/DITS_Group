@@ -6,9 +6,9 @@ Serveur de la plateforme web de **DITS Group**, société de conseil et d'expert
 La plateforme réunit un **site vitrine**, un **espace client** et un **tableau de bord d'administration**.
 
 - Site en ligne : [dits-frontend.vercel.app](https://dits-frontend.vercel.app)
-- Code du site (React) : [TAGUE-GITH/dits-frontend](https://github.com/TAGUE-GITH/dits-frontend)
+- Code du site (React) : dossier [frontend](../frontend)
 
-![CI](https://github.com/TAGUE-GITH/DITS_Group/actions/workflows/ci.yml/badge.svg)
+
 
 ## Fonctionnalités
 
@@ -47,7 +47,7 @@ echo "JWT_SECRET=une-cle-longue-et-aleatoire-de-32-caracteres-minimum" > .env
 echo "ADMIN_EMAIL=admin@exemple.fr" >> .env
 echo "ADMIN_PASSWORD=un-mot-de-passe-provisoire" >> .env
 
-docker compose up --build   # API sur http://localhost:8080 + PostgreSQL
+docker compose up --build   # depuis la racine du depot : API sur http://localhost:8080 + PostgreSQL
 ```
 
 ## Tests

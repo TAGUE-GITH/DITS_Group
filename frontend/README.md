@@ -4,9 +4,9 @@ Site de **DITS Group**, société de conseil et d'expertise en systèmes d'infor
 on-premise) : site vitrine, espace client et tableau de bord d'administration.
 
 - En ligne : [dits-frontend.vercel.app](https://dits-frontend.vercel.app)
-- API (Spring Boot) : [TAGUE-GITH/DITS_Group](https://github.com/TAGUE-GITH/DITS_Group)
+- API (Spring Boot) : dossier [backend](../backend)
 
-![CI](https://github.com/TAGUE-GITH/dits-frontend/actions/workflows/ci.yml/badge.svg)
+
 
 ## Pages
 
