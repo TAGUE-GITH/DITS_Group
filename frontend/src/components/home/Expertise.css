@@ -1,0 +1,42 @@
+.section-dark .section-title p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+}
+
+.expertise-item {
+  padding: 2rem 1.6rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.expertise-item:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.expertise-number {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.expertise-item h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+
+.expertise-item p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.72);
+}

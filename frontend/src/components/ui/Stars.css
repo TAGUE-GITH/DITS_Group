@@ -1,0 +1,27 @@
+.stars {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.star-filled {
+  color: var(--gold);
+}
+
+.star-empty {
+  color: var(--border);
+}
+
+.star-input {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.star-input button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+  line-height: 1;
+  padding: 0.1rem;
+}

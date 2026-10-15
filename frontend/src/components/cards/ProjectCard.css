@@ -1,0 +1,17 @@
+.project-card .article-image {
+  position: relative;
+}
+
+.project-client {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(11, 31, 58, 0.85);
+  backdrop-filter: blur(6px);
+  font-family: "Inter", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}

@@ -1,0 +1,74 @@
+/* Inscription a la newsletter (pied de page, fond bleu marine) */
+.newsletter {
+  flex: 1 1 380px;
+  max-width: 520px;
+}
+
+.newsletter-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: box-shadow var(--transition);
+}
+
+.newsletter-field:focus-within {
+  box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.35), 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.newsletter-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.newsletter-field input::placeholder {
+  color: var(--muted);
+}
+
+.newsletter-field .btn {
+  flex-shrink: 0;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.newsletter-message {
+  margin-top: 0.6rem;
+  padding-left: 1rem;
+  font-size: 0.9rem;
+}
+
+.newsletter-success {
+  color: #86efac;
+}
+
+.newsletter-error {
+  color: #fca5a5;
+}
+
+@media (max-width: 480px) {
+  .newsletter-field {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 18px;
+    padding: 0.5rem;
+  }
+
+  .newsletter-field input {
+    text-align: center;
+  }
+
+  .newsletter-field .btn {
+    justify-content: center;
+    border-radius: 12px;
+  }
+}

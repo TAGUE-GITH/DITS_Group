@@ -1,0 +1,30 @@
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+}
+
+.filter-chip {
+  padding: 0.55rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: var(--transition);
+}
+
+.filter-chip:hover {
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.filter-chip-active,
+.filter-chip-active:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}

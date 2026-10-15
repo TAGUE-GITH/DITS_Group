@@ -1,0 +1,67 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+}
+
+.chip {
+  padding: 0.55rem 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: var(--transition);
+}
+
+.chip:hover {
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.chip-active,
+.chip-active:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.job-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.job-meta svg {
+  color: var(--gold);
+}
+
+.apply h3 {
+  margin-bottom: 0.4rem;
+}
+
+.apply > p {
+  margin-bottom: 1.4rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.detail-subtitle {
+  margin: 2rem 0 0.8rem;
+}

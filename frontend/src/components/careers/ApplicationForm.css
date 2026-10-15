@@ -1,0 +1,51 @@
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field .file-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.field .file-input:hover,
+.field .file-input:focus-within {
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.field .file-input svg {
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.field .file-input span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-input input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

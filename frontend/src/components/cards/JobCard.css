@@ -1,0 +1,33 @@
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.job-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.job-top small {
+  color: var(--muted);
+}
+
+.job-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  color: var(--navy);
+}
+
+.job-location svg {
+  color: var(--gold);
+}
+
+.job-card p {
+  font-size: 0.95rem;
+  color: var(--muted);
+}

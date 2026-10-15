@@ -1,0 +1,213 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--header-height);
+}
+
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.navbar-scrolled::before {
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.navbar-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo {
+  position: relative;
+  z-index: 1002;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--navy);
+  transition: var(--transition);
+}
+
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+  color: var(--gold);
+}
+
+.logo em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--gold);
+  margin-left: 0.25rem;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.menu ul {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.menu li a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.menu li a:hover,
+.menu li a.active {
+  color: var(--navy);
+  background: var(--gold-soft);
+}
+
+.menu li a.active {
+  font-weight: 600;
+}
+
+.menu-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.menu-actions .btn {
+  padding: 0.6rem 1rem;
+  font-size: 0.88rem;
+}
+
+.burger {
+  display: none;
+}
+
+@media (max-width: 1180px) {
+  .burger {
+    position: relative;
+    z-index: 1002;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .burger span {
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--gold);
+    transition: var(--transition);
+  }
+
+  .burger-open span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+  }
+
+  .burger-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger-open span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+  }
+
+  .navbar-open .logo {
+    color: #fff;
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.5rem;
+    padding: calc(var(--header-height) + 1rem) 8% 3rem;
+    background: var(--navy);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.45s cubic-bezier(0.77, 0, 0.18, 1),
+      visibility 0.45s;
+  }
+
+  .menu-open {
+    transform: none;
+    visibility: visible;
+  }
+
+  .menu ul {
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+  }
+
+  .menu li {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .menu-open li {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(0.15s + var(--i) * 0.06s);
+  }
+
+  .menu li a,
+  .menu li a:hover,
+  .menu li a.active {
+    padding: 0.4rem 0;
+    border-radius: 0;
+    background: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.7rem;
+    color: #fff;
+  }
+
+  .menu li a:hover,
+  .menu li a.active {
+    color: var(--gold);
+  }
+
+  .menu-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .menu-actions .btn {
+    padding: 0.9rem 1.4rem;
+    font-size: 1rem;
+  }
+
+  .menu-actions .btn-outline {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+}
