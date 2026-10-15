@@ -1,6 +1,8 @@
 package com.dits.dits_group.recruitment.service;
 
 import jakarta.annotation.PostConstruct;
+import com.dits.dits_group.common.storage.StoredFile;
+import com.dits.dits_group.common.storage.StoredFileRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,12 +24,18 @@ public class JobApplicationFileStorageService {
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             );
 
+    /** Prefixe des CV dans la table des fichiers (copie en base, conservee apres un redeploiement). */
+    static final String PREFIX = "cvs/";
+
     private final Path uploadDirectory;
+    private final StoredFileRepository storedFiles;
 
     public JobApplicationFileStorageService(
             @Value("${app.recruitment.cv-upload-dir:uploads/cvs}")
-            String uploadDirectory
+            String uploadDirectory,
+            StoredFileRepository storedFiles
     ) {
+        this.storedFiles = storedFiles;
         this.uploadDirectory =
                 Paths.get(uploadDirectory)
                         .toAbsolutePath()
@@ -80,11 +87,17 @@ public class JobApplicationFileStorageService {
         }
 
         try {
-            Files.copy(
-                    file.getInputStream(),
-                    targetPath,
-                    StandardCopyOption.REPLACE_EXISTING
+            byte[] data = file.getBytes();
+
+            storedFiles.save(
+                    new StoredFile(
+                            PREFIX + storedFileName,
+                            file.getContentType(),
+                            data
+                    )
             );
+
+            Files.write(targetPath, data);
 
             return storedFileName;
 
@@ -122,6 +135,18 @@ public class JobApplicationFileStorageService {
             );
         }
 
+        // Disque efface par un redeploiement : le CV est recopie depuis la base
+        if (!Files.exists(filePath)) {
+            storedFiles.findById(PREFIX + storedFileName).ifPresent(stored -> {
+                try {
+                    Files.createDirectories(filePath.getParent());
+                    Files.write(filePath, stored.getData());
+                } catch (IOException exception) {
+                    throw new IllegalStateException("Impossible de restaurer le CV.", exception);
+                }
+            });
+        }
+
         return filePath;
     }
 
@@ -137,6 +162,8 @@ public class JobApplicationFileStorageService {
         ) {
             return;
         }
+
+        storedFiles.deleteById(PREFIX + storedFileName);
 
         Path filePath =
                 getFilePath(storedFileName);

@@ -1,6 +1,8 @@
 package com.dits.dits_group.document.service;
 
 import jakarta.annotation.PostConstruct;
+import com.dits.dits_group.common.storage.StoredFile;
+import com.dits.dits_group.common.storage.StoredFileRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,18 +12,23 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
 public class DocumentFileStorageService {
 
+    /** Prefixe des documents dans la table des fichiers (copie en base, conservee apres un redeploiement). */
+    static final String PREFIX = "documents/";
+
     private final Path uploadDirectory;
+    private final StoredFileRepository storedFiles;
 
     public DocumentFileStorageService(
             @Value("${app.documents.upload-dir:uploads/documents}")
-            String uploadDirectory
+            String uploadDirectory,
+            StoredFileRepository storedFiles
     ) {
+        this.storedFiles = storedFiles;
         this.uploadDirectory = Paths
                 .get(uploadDirectory)
                 .toAbsolutePath()
@@ -89,11 +96,17 @@ public class DocumentFileStorageService {
                         file.getInputStream()
         ) {
 
-            Files.copy(
-                    inputStream,
-                    destination,
-                    StandardCopyOption.REPLACE_EXISTING
+            byte[] data = inputStream.readAllBytes();
+
+            storedFiles.save(
+                    new StoredFile(
+                            PREFIX + storedFileName,
+                            file.getContentType(),
+                            data
+                    )
             );
+
+            Files.write(destination, data);
 
             return storedFileName;
 
@@ -129,9 +142,7 @@ public class DocumentFileStorageService {
         }
 
         if (!Files.exists(filePath)) {
-            throw new RuntimeException(
-                    "Le fichier demandé n'existe plus sur le serveur."
-            );
+            restore(storedFileName, filePath);
         }
 
         return filePath;
@@ -157,11 +168,35 @@ public class DocumentFileStorageService {
             );
         }
 
+        storedFiles.deleteById(PREFIX + storedFileName);
+
         try {
             Files.deleteIfExists(filePath);
         } catch (IOException exception) {
             throw new RuntimeException(
                     "Impossible de supprimer le fichier du serveur.",
+                    exception
+            );
+        }
+    }
+
+    // ==========================================
+    // RESTAURER UN FICHIER EFFACE DU DISQUE
+    // ==========================================
+
+    private void restore(String storedFileName, Path filePath) {
+
+        StoredFile stored = storedFiles
+                .findById(PREFIX + storedFileName)
+                .orElseThrow(() -> new RuntimeException(
+                        "Le fichier demandé n'existe plus sur le serveur."
+                ));
+
+        try {
+            Files.write(filePath, stored.getData());
+        } catch (IOException exception) {
+            throw new RuntimeException(
+                    "Impossible de restaurer le fichier.",
                     exception
             );
         }
