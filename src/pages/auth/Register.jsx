@@ -32,7 +32,8 @@ export default function Register() {
       throw new Error("Les mots de passe ne correspondent pas.");
     }
 
-    const { confirmPassword, ...userData } = values;
+    const userData = { ...values };
+    delete userData.confirmPassword;
     await register(userData);
     setDone(true);
   });

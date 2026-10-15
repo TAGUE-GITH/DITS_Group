@@ -10,7 +10,8 @@ export const login = async (email, password) => {
   } catch (error) {
     if (error.status === 403) {
       throw new Error(
-        "Votre compte est en attente de validation ou a été désactivé."
+        "Votre compte est en attente de validation ou a été désactivé.",
+        { cause: error }
       );
     }
     throw error;

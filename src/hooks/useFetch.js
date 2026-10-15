@@ -7,9 +7,10 @@ export default function useFetch(fetcher) {
   useEffect(() => {
     let active = true;
 
-    setState((previous) => ({ ...previous, loading: true, error: "" }));
-
-    fetcher()
+    // Le chargement demarre de facon asynchrone (pas de mise a jour d'etat synchrone dans l'effet)
+    Promise.resolve()
+      .then(() => active && setState((previous) => ({ ...previous, loading: true, error: "" })))
+      .then(() => fetcher())
       .then((data) => active && setState({ data, loading: false, error: "" }))
       .catch(
         (err) =>

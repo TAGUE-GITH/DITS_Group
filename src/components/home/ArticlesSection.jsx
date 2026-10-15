@@ -9,6 +9,9 @@ export default function ArticlesSection() {
   const { data, loading, error } = useFetch(getArticles);
   const articles = (data || []).slice(0, 3);
 
+  // Pas encore d'article publie : la section n'apparait pas
+  if (!loading && !error && !articles.length) return null;
+
   return (
     <section className="section">
       <div className="container">

@@ -1,15 +1,14 @@
 export default function DonutChart({ items, stats, totalLabel }) {
   const total = items.reduce((sum, [key]) => sum + (stats[key] || 0), 0);
-  let cumulative = 0;
 
-  const stops = items
-    .filter(([key]) => stats[key])
-    .map(([key, , color]) => {
-      const start = (cumulative / (total || 1)) * 360;
-      cumulative += stats[key];
-      const end = (cumulative / (total || 1)) * 360;
-      return `${color} ${start}deg ${end}deg`;
-    });
+  // Angle de debut et de fin de chaque part, calcules sans variable modifiee pendant l'affichage
+  const shown = items.filter(([key]) => stats[key]);
+  const stops = shown.map(([key, , color], index) => {
+    const before = shown.slice(0, index).reduce((sum, [previous]) => sum + stats[previous], 0);
+    const start = (before / (total || 1)) * 360;
+    const end = ((before + stats[key]) / (total || 1)) * 360;
+    return `${color} ${start}deg ${end}deg`;
+  });
 
   const background = stops.length ? `conic-gradient(${stops.join(", ")})` : "var(--border)";
 

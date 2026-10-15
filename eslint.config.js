@@ -18,4 +18,9 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Tests Vitest : describe, it, expect sont globaux
+    files: ['src/test/**/*.{js,jsx}'],
+    languageOptions: { globals: { ...globals.browser, describe: 'readonly', it: 'readonly', expect: 'readonly', vi: 'readonly' } },
+  },
 ])

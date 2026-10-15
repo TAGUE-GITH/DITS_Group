@@ -1,5 +1,5 @@
 import { getPartners } from "../../api/partnerApi";
-import { toAssetUrl } from "../../api/http";
+import AssetImage from "../ui/AssetImage";
 import useFetch from "../../hooks/useFetch";
 import SectionTitle from "../ui/SectionTitle";
 
@@ -30,11 +30,7 @@ export default function PartnersSection() {
                 className="partner"
                 title={partner.name}
               >
-                {logo ? (
-                  <img src={toAssetUrl(logo)} alt={partner.name} loading="lazy" />
-                ) : (
-                  partner.name
-                )}
+                <AssetImage src={logo} alt={partner.name} fallback={partner.name} />
               </a>
             );
           })}

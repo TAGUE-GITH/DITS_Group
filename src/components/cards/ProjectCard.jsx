@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
-import { toAssetUrl } from "../../api/http";
+import AssetImage from "../ui/AssetImage";
 import { excerpt } from "../../utils/format";
 import Tags from "../ui/Tags";
 import "./Cards.css";
@@ -13,11 +13,7 @@ export default function ProjectCard({ project }) {
       className="card card-hover article-card project-card"
     >
       <div className="article-image">
-        {project.imageUrl ? (
-          <img src={toAssetUrl(project.imageUrl)} alt={project.title} loading="lazy" />
-        ) : (
-          <span>DITS</span>
-        )}
+        <AssetImage src={project.imageUrl} alt={project.title} fallback={<span>DITS</span>} />
         {project.clientName && (
           <span className="project-client">{project.clientName}</span>
         )}

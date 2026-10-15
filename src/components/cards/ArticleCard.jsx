@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight } from "react-icons/fi";
-import { toAssetUrl } from "../../api/http";
+import AssetImage from "../ui/AssetImage";
 import { excerpt, formatDate } from "../../utils/format";
 import "./Cards.css";
 
@@ -10,11 +10,7 @@ export default function ArticleCard({ article }) {
   return (
     <Link to={`/articles/${article.id}`} className="card card-hover article-card">
       <div className="article-image">
-        {article.imageUrl ? (
-          <img src={toAssetUrl(article.imageUrl)} alt={article.title} loading="lazy" />
-        ) : (
-          <span>DITS</span>
-        )}
+        <AssetImage src={article.imageUrl} alt={article.title} fallback={<span>DITS</span>} />
       </div>
       <div className="article-body">
         {date && <span className="badge">{formatDate(date)}</span>}
