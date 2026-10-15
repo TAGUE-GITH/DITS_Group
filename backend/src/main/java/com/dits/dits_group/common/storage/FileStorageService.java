@@ -41,6 +41,19 @@ public class FileStorageService {
         }
     }
 
+    /** Fichier deja en memoire (photos du contenu de depart). */
+    @Transactional
+    public String store(byte[] data, String contentType, String extension, String folder) {
+        try {
+            String path = folder + "/" + UUID.randomUUID() + "." + extension;
+            storedFiles.save(new StoredFile(path, contentType, data));
+            write(path, data);
+            return "/uploads/" + path;
+        } catch (IOException exception) {
+            throw new RuntimeException("Impossible d'enregistrer le fichier.", exception);
+        }
+    }
+
     @Transactional
     public void delete(String fileUrl) {
         if (fileUrl == null || !fileUrl.startsWith("/uploads/")) return;

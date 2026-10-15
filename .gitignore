@@ -34,3 +34,8 @@ build/
 application-local.properties
 .env
 uploads/
+### Site (frontend) ###
+node_modules
+dist
+*.local
+uploads/
